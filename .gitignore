@@ -1,0 +1,89 @@
+# CodeIgniter 3 .gitignore
+
+# -------------------------------------------------------------------
+# Application specific files and folders
+# -------------------------------------------------------------------
+
+# Application cache and logs
+/application/cache/*
+!/application/cache/index.html # Keep index.html for security
+/application/logs/*
+!/application/logs/index.html # Keep index.html for security
+
+# Database backups (if any are stored in the app directory)
+/application/database_backups/
+
+# User uploaded files (if stored within the application directory)
+/application/uploads/
+/application/assets/uploads/ # Common location for uploads
+
+# Configuration files that might contain sensitive data (e.g., database credentials)
+# NOTE: If you store sensitive config in version control, you should use
+# environment variables or a separate, untracked config file for production.
+# Consider using a 'database.local.php' or similar if you need different configs.
+/application/config/database.php
+/application/config/development/ # If you have environment-specific configs
+/application/config/production/
+/application/config/testing/
+
+# Session files (if using file-based sessions outside of system/cache)
+/application/sessions/
+
+# -------------------------------------------------------------------
+# System specific files and folders (generally shouldn't be modified often,
+# but sometimes custom libraries or patches are applied which should be versioned)
+# -------------------------------------------------------------------
+
+# Composer Vendor directory (if you're using Composer for CI3, which is less common but possible)
+/vendor/
+
+# -------------------------------------------------------------------
+# Web server specific files and folders
+# -------------------------------------------------------------------
+
+# htaccess files (if they are for local development or sensitive)
+# If your .htaccess contains critical rewrite rules for deployment, you might want to track it.
+# However, often local .htaccess files can differ or contain sensitive dev info.
+#.htaccess
+#/public/.htaccess # If you have a separate public folder
+
+# Nginx/Apache configs (if stored in project root for convenience)
+*.conf
+*.ini
+
+# -------------------------------------------------------------------
+# IDE and OS generated files
+# -------------------------------------------------------------------
+
+.idea/              # JetBrains IDEs (PhpStorm, IntelliJ)
+.vscode/            # VS Code
+.DS_Store           # macOS
+Thumbs.db           # Windows
+ehthumbs.db         # Windows
+*.log               # Any generic log files
+*.swp               # Vim swap files
+*.swo               # Vim swap files
+*.bak               # Backup files
+*.tmp               # Temporary files
+/.env               # Environment variables file
+
+# Composer related files
+composer.lock       # If you are using composer for CI3. The vendor folder should also be ignored.
+
+# Node.js related files (if you're integrating frontend build tools)
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+
+# Frontend build outputs (e.g., from Webpack, Gulp, Grunt)
+/public/build/
+/public/dist/
+/public/hot/
+/public/mix-manifest.json
+
+# -------------------------------------------------------------------
+# Default CI3 index.html files (often kept for security reasons in empty directories)
+# -------------------------------------------------------------------
+# You might want to remove the '!' if you truly want to ignore them.
+# The `!/application/cache/index.html` already handles keeping the `index.html`
+# file in specified directories.
