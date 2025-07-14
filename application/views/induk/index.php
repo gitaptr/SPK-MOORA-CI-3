@@ -80,7 +80,7 @@
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Jumlah</label>
-                        <input autocomplete="off" type="number" name="jumlah" required class="form-control" />
+                        <input autocomplete="off" type="number" name="jumlah" min="1"required class="form-control" />
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Kolam</label>
@@ -127,7 +127,7 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_jumlah">Jumlah</label>
-                        <input type="number" class="form-control" name="jumlah" id="edit_jumlah" required />
+                        <input type="number" class="form-control" name="jumlah" min="1" id="edit_jumlah" required />
                     </div>
                     <div class="form-group">
                         <label for="edit_kolam">Kolam</label>

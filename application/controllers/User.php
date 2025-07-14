@@ -38,7 +38,7 @@ class User extends CI_Controller
     public function update_status($id_user, $status)
     {
         // Pastikan status valid
-        if (in_array($status, ['Active', 'Pending', 'Rejected'])) {
+        if (in_array($status, ['Active', 'Pending', 'Rejected', 'Inactive'])) {
             $this->User_model->update_status($id_user, $status);
             $this->session->set_flashdata('message', '<div class="alert alert-success">Status pengguna berhasil diperbarui menjadi ' . $status . '.</div>');
         } else {
@@ -58,13 +58,18 @@ class User extends CI_Controller
 
     public function store()
     {
-        // Ambil data dari input form
+        $id_user_level = $this->input->post('privilege');
+
+        // Tentukan status otomatis berdasarkan level user
+        $status = ($id_user_level == 2) ? 'Active' : 'Pending';
+
         $data = [
-            'id_user_level' => $this->input->post('privilege'), // Privilege dipilih di form
+            'id_user_level' => $id_user_level,
             'nama' => $this->input->post('nama'),
             'username' => $this->input->post('username'),
             'password' => md5($this->input->post('password')),
-            'id_wilayah' => $this->input->post('id_wilayah') // Wilayah dipilih di form
+            'id_wilayah' => $this->input->post('id_wilayah'),
+            'status' => $status
         ];
 
         // Validasi input
@@ -156,22 +161,20 @@ class User extends CI_Controller
     }
 
     public function get_user_growth_data($tahun)
-{
-    $data = $this->User_model->get_user_growth($tahun);
-    echo json_encode($data);
-}
+    {
+        $data = $this->User_model->get_user_growth($tahun);
+        echo json_encode($data);
+    }
 
     public function get_kinerja_upr()
     {
         $id_penyuluh = $this->session->userdata('id_user'); // Ambil ID penyuluh login
-    
+
         $this->load->model('User_model');
         $data = $this->User_model->get_kinerja_upr($id_penyuluh);
-    
+
         echo json_encode($data);
     }
-    
-
 }
     
     /* End of file Kategori.php */

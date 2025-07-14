@@ -19,11 +19,11 @@
         <div class="row">
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Tanggal</label>
-                <input autocomplete="off" type="date" name="tanggal" required class="form-control" />
+                <input autocomplete="off" type="date" name="tanggal" id="tanggal" required class="form-control" />
             </div>
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Jumlah Benih</label>
-                <input autocomplete="off" type="number" name="jumlah" required class="form-control" />
+                <input autocomplete="off" type="number" name="jumlah" min="1" required class="form-control" />
             </div>
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Ukuran</label>
@@ -60,3 +60,10 @@
 </div>
 
 <?php $this->load->view('layouts/footer_admin'); ?>
+
+<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const today = new Date().toISOString().split('T')[0];
+			document.getElementById("tanggal").setAttribute("max", today);
+		});
+	</script>

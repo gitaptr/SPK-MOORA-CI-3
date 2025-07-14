@@ -71,7 +71,7 @@ class Stock extends CI_Controller
 
         if ($this->form_validation->run()) {
             // insert ke model
-            $result = $this->Stock_model->insert($data);
+            $result = $this->Stock_model->insert($data, false);
             if ($result) {
                 $this->session->set_flashdata(
                     'message',

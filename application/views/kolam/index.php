@@ -83,11 +83,11 @@
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Luas Kolam (m2)</label>
-                        <input autocomplete="off" type="number" name="luas_kolam" required class="form-control" />
+                        <input autocomplete="off" type="number" name="luas_kolam" min="1" required class="form-control" />
                     </div>
                     <div class="form-group">
                         <label class="font-weight-bold">Kapasitas</label>
-                        <input autocomplete="off" type="number" name="kapasitas" required class="form-control" />
+                        <input autocomplete="off" type="number" name="kapasitas" min="1" required class="form-control" />
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
@@ -118,11 +118,11 @@
                     </div>
                     <div class="form-group">
                         <label for="edit_jumlah">Luas Kolam (m2)</label>
-                        <input type="number" class="form-control" name="luas_kolam" id="edit_luas_kolam" required />
+                        <input type="number" class="form-control" name="luas_kolam" min="1"id="edit_luas_kolam" required />
                     </div>
                     <div class="form-group">
                         <label for="edit_kolam">Kapasitas</label>
-                        <input type="text" class="form-control" name="kapasitas" id="edit_kapasitas" required />
+                        <input type="text" class="form-control" name="kapasitas" min="1" id="edit_kapasitas" required />
                     </div>
                 </div>
                 <div class="modal-footer">

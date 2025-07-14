@@ -13,9 +13,10 @@ class Pemijahan_model extends CI_Model
 
     // Dalam Pemijahan_model.php
 
-    public function tampil_by_upr($id_upr_filter) 
+    public function tampil_by_upr($id_upr_filter)
     {
         $this->db->select('*');
+        $this->db->where('status !=', 9); 
         $this->db->from('pemijahan');
 
         if (!empty($id_upr_filter)) {
@@ -32,6 +33,7 @@ class Pemijahan_model extends CI_Model
         $this->db->from('pemijahan');
         $this->db->join('upr', 'pemijahan.id_upr = upr.id_upr');
         $this->db->where('upr.id_wilayah', $id_wilayah);
+        $this->db->where('pemijahan.status !=', 9);
         return $this->db->get()->result();
     }
 
@@ -70,7 +72,8 @@ class Pemijahan_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('pemijahan');
-        $this->db->where_in('status', 0,); // Menyaring status 0 dan 1
+        $this->db->where_in('status', 0); 
+        $this->db->where('status !=', 9); 
         $query = $this->db->get();
         return $query->result();
     }
@@ -143,17 +146,18 @@ class Pemijahan_model extends CI_Model
         $this->db->update('pemijahan', $ubah);
     }
 
-    public function delete($id_pemijahan)
+    // Dalam Pemijahan_model.php
+    public function delete($id_pemijahan) // Bisa juga diubah namanya menjadi soft_delete
     {
         $this->db->where('id_pemijahan', $id_pemijahan);
-        $result = $this->db->delete('pemijahan');
+        $data = ['status' => 9]; // Ubah status menjadi 'dihapus logis'
+        $result = $this->db->update('pemijahan', $data);
 
         if (!$result) {
-            log_message('error', 'Gagal menghapus data: ' . json_encode($this->db->error()));
+            log_message('error', 'Gagal melakukan soft delete data: ' . json_encode($this->db->error()));
         } else {
-            log_message('info', 'Data berhasil dihapus dengan ID: ' . $id_pemijahan);
+            log_message('info', 'Data berhasil di-soft delete dengan ID: ' . $id_pemijahan);
         }
-
         return $result;
     }
 

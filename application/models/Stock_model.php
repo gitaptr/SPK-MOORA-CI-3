@@ -24,14 +24,21 @@ class Stock_model extends CI_Model
         return $this->db->count_all('stok_benih');
     }
 
-    public function insert($data = [])
+    public function insert($data = [], $require_pemijahan = false)
     {
-        // Pastikan data yang diperlukan ada
-        if (empty($data['waktu_pemijahan']) || empty($data['jumlah'])) {
-            return false;
+        if ($require_pemijahan) {
+            // Untuk pemijahan, wajib isi waktu_pemijahan
+            if (empty($data['waktu_pemijahan']) || empty($data['jumlah'])) {
+                return false;
+            }
+        } else {
+            // Untuk input manual, cukup jumlah saja
+            if (empty($data['jumlah'])) {
+                return false;
+            }
         }
 
-        // Set nilai default jika tidak ada
+        // Nilai default
         $defaults = [
             'tanggal' => date('Y-m-d'),
             'ukuran' => '0.25',
@@ -45,13 +52,13 @@ class Stock_model extends CI_Model
             }
         }
 
-        // Pastikan id_upr ada
         if (empty($data['id_upr'])) {
             $data['id_upr'] = $this->session->userdata('id_upr');
         }
 
         return $this->db->insert('stok_benih', $data);
     }
+
 
     public function get_by_pemijahan($waktu_pemijahan)
     {

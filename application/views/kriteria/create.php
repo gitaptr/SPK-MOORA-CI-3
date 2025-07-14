@@ -31,7 +31,7 @@
 
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Bobot Kriteria</label>
-                <input autocomplete="off" type="number" id="bobot_kriteria" name="bobot" step="0.01" required class="form-control" />
+                <input autocomplete="off" type="number" id="bobot_kriteria" name="bobot" step="0.01" min="0.01" required class="form-control" />
                 <small id="bobot_kriteria_error" class="text-danger"></small> <!-- Untuk menampilkan pesan error -->
             </div>
 

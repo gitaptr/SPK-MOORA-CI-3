@@ -25,8 +25,8 @@
    <link href="<?= base_url('assets/') ?>css/sb-admin-2.min.css" rel="stylesheet">
 
    <link href="<?= base_url('assets/') ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-   <link rel="shortcut icon" href="<?= base_url('assets/') ?>img/favicon.ico" type="image/x-icon">
-   <link rel="icon" href="<?= base_url('assets/') ?>img/favicon.ico" type="image/x-icon">
+   <link rel="shortcut icon" href="<?= base_url('assets/') ?>img/logo.ico" type="image/x-icon">
+   <link rel="icon" href="<?= base_url('assets/') ?>img/logo.ico" type="image/x-icon">
 
  </head>
 

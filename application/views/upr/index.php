@@ -13,7 +13,7 @@
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between mb-2">
             <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Daftar Data UPR </h6>
-            <h6 class="btn btn-success" data-toggle="modal" data-target="#modal-Input">
+            <h6 class="btn btn-info" data-toggle="modal" data-target="#modal-Input">
                 <i class="fa fa-plus"></i> Tambah Data
             </h6>
         </div>
@@ -45,7 +45,7 @@
                             <td align="left"><?php echo $value->no_hp ?></td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="#" class="btn btn-success btn-sm" onclick="showEditModal(<?= $value->id_upr ?>)" title="Edit Data"><i class="fa fa-edit"></i></a>
+                                    <a href="#" class="btn btn-warning btn-sm" onclick="showEditModal(<?= $value->id_upr ?>)" title="Edit Data"><i class="fa fa-edit"></i></a>
 
                                     <a data-toggle="tooltip" data-placement="bottom" title="Hapus Data" href="<?= base_url('Upr/destroy/' . $value->id_upr) ?>" onclick="return confirm ('Apakah anda yakin untuk meghapus data ini')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                                 </div>
@@ -97,10 +97,19 @@
                         </select>
                     </div>
 
-                    <div class="form-group ">
+                    <div class="form-group">
                         <label class="font-weight-bold">No HP</label>
-                        <input autocomplete="off" type="text" name="no_hp" required class="form-control" />
+                        <input autocomplete="off"
+                            type="text"
+                            name="no_hp"
+                            id="no_hp"
+                            required
+                            maxlength="12"
+                            pattern="08[0-9]{8,10}"
+                            class="form-control"
+                            title="Nomor HP harus diawali dengan 08 dan terdiri dari 10–12 digit angka" />
                     </div>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
                         <button type="reset" class="btn btn-warning"><i class="fa fa-sync-alt"></i> Reset</button>
@@ -162,6 +171,19 @@
 
 <?php $this->load->view('layouts/footer_admin'); ?>
 <script>
+    ['no_hp', 'edit_no_hp'].forEach(function(id) {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12);
+            });
+        }
+    });
+</script>
+
+
+
+<script>
     function showEditModal(id) {
         $.ajax({
             url: "<?= base_url('Upr/get_upr_by_id/') ?>" + id,
@@ -181,7 +203,6 @@
         });
     }
 </script>
-
 </body>
 
 </html>

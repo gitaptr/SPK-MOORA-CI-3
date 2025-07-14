@@ -19,15 +19,11 @@
 			<?php echo form_hidden('id_pemijahan', $pemijahan->id_pemijahan) ?>
 			<div class="form-group col-md-6">
 				<label class="font-weight-bold">Waktu Pemijahan</label>
-				<input autocomplete="off" type="date" name="waktu_pemijahan" value="<?php echo $pemijahan->waktu_pemijahan ?>" required class="form-control" />
+				<input autocomplete="off" type="date" name="waktu_pemijahan" id="waktu_pemijahan" value="<?php echo $pemijahan->waktu_pemijahan ?>" required class="form-control" />
 			</div>
-
-
-
-
 			<div class="form-group col-md-6">
 				<label class="font-weight-bold">Jumlah Induk (Betina dan Jantan)</label>
-				<input autocomplete="off" type="number" name="jumlah_indukk" value="<?php echo $pemijahan->jumlah_indukk ?>" required class="form-control" />
+				<input autocomplete="off" type="number" name="jumlah_indukk" min="1" value="<?php echo $pemijahan->jumlah_indukk ?>" required class="form-control" />
 			</div>
 
 			<div class="form-group col-md-6">
@@ -56,9 +52,6 @@
 				</select>
 
 			</div>
-
-
-
 			<div class="form-group col-md-6">
     <label class="font-weight-bold">Status Pemijahan</label>
     <?php
@@ -79,9 +72,6 @@
     <input type="text" class="form-control" value="<?= $status_label; ?>" readonly>
     <input type="hidden" name="status" value="<?= $pemijahan->status; ?>">
 </div>
-
-
-
 		</div>
 		<div class="card-footer text-right">
 			<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
@@ -91,3 +81,12 @@
 	</div>
 
 	<?php $this->load->view('layouts/footer_admin'); ?>
+	<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split('T')[0];
+        const input = document.getElementById("waktu_pemijahan");
+        if (input) {
+            input.setAttribute("max", today);
+        }
+    });
+</script>

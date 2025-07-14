@@ -165,19 +165,21 @@ class Pemijahan extends CI_Controller
         redirect('pemijahan');
     }
 
-    public function destroy($id_pemijahan)
-    {
-        if ($this->read_only) {
-            show_error('Anda tidak memiliki hak akses untuk menghapus data.', 403, 'Akses Ditolak');
-        }
-
-        if ($this->Pemijahan_model->delete($id_pemijahan)) {
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil dihapus!</div>');
-        } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal menghapus data!</div>');
-        }
-        redirect('pemijahan');
+    // Dalam Pemijahan.php::destroy()
+public function destroy($id_pemijahan)
+{
+    if ($this->read_only) {
+        show_error('Anda tidak memiliki hak akses untuk menghapus data.', 403, 'Akses Ditolak');
     }
+
+    if ($this->Pemijahan_model->delete($id_pemijahan)) { // Ini akan melakukan soft delete
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data pemijahan berhasil diarsipkan!</div>');
+    } else {
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal mengarsipkan data!</div>');
+    }
+    redirect('pemijahan');
+}
+
 
 
     public function cetak_laporan()

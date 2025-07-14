@@ -18,7 +18,7 @@
             <?php echo form_hidden('id_stok_benih', $stock->id_stok_benih) ?>
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Tanggal</label>
-                <input autocomplete="off" type="date" name="tanggal" value="<?php echo $stock->tanggal ?>" required class="form-control" />
+                <input autocomplete="off" type="date" name="tanggal" id="tanggal" value="<?php echo $stock->tanggal ?>" required class="form-control" />
             </div>
 
             <div class="form-group col-md-6">
@@ -70,3 +70,9 @@
 </div>
 
 <?php $this->load->view('layouts/footer_admin'); ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("tanggal").setAttribute("max", today);
+    });
+</script>

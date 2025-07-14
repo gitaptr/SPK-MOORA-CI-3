@@ -48,7 +48,11 @@ class Upr extends CI_Controller
         $this->form_validation->set_rules('nama_upr', 'Nama UPR', 'required');
         $this->form_validation->set_rules('id_wilayah', 'Wilayah', 'required');
         $this->form_validation->set_rules('id_user', 'Penyuluh', 'required');
-        $this->form_validation->set_rules('no_hp', 'No HP', 'required');
+        $this->form_validation->set_rules('no_hp','No HP','required|numeric|regex_match[/^08[0-9]{8,10}$/]',
+            [
+                'regex_match' => 'Nomor HP harus diawali dengan 08 dan terdiri dari 10–12 digit.'
+            ]
+        );
 
         if ($this->form_validation->run() !== false) {
             $this->Upr_model->insert($data);

@@ -465,22 +465,19 @@ class Perhitungan extends CI_Controller
 
     public function hapus_historis($id_pemijahan)
     {
-        log_message('debug', 'Attempting to delete historis for id_pemijahan: ' . $id_pemijahan);
-
         $this->db->trans_start();
 
-        $delete_success = $this->Perhitungan_model->hapus_historis_by_pemijahan($id_pemijahan);
+        // Hapus semua data historis terkait pemijahan
+        $this->db->where('id_pemijahan', $id_pemijahan);
+        $delete_success = $this->db->delete('historis');
 
-        $this->db->trans_complete(); // Selesaikan transaksi
+        $this->db->trans_complete();
 
         if ($this->db->trans_status() === FALSE || !$delete_success) {
-            log_message('error', 'Failed to delete historis for id_pemijahan: ' . $id_pemijahan . ' - DB Status: ' . ($this->db->trans_status() ? 'TRUE' : 'FALSE') . ' - Model result: ' . ($delete_success ? 'TRUE' : 'FALSE') . ' - Last Query: ' . $this->db->last_query());
             $this->session->set_flashdata('error', 'Gagal menghapus data historis.');
         } else {
-            log_message('info', 'Historis for id_pemijahan: ' . $id_pemijahan . ' successfully deleted.');
             $this->session->set_flashdata('success', 'Data historis berhasil dihapus.');
         }
-
         redirect('Perhitungan/data_historis');
     }
 

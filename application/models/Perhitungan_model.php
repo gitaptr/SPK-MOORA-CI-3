@@ -121,11 +121,12 @@ class Perhitungan_model extends CI_Model
 
     // Dalam Perhitungan_model.php
 
-    public function hapus_historis_by_pemijahan($id_pemijahan) // Ubah nama fungsi agar jelas
+    public function hapus_historis_by_id($id_historis)
     {
-        $this->db->where('id_pemijahan', $id_pemijahan); // KONDISI PENTING: Gunakan id_pemijahan
-        return $this->db->delete('historis'); // Pastikan nama tabel ini benar ('historis' atau 'tabel_historis')
+        $this->db->where('id_historis', $id_historis);
+        return $this->db->delete('historis');
     }
+
 
 
     public function get_nilai_kriteria_by_pemijahan($id_pemijahan, $id_upr)

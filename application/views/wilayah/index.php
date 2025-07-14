@@ -13,7 +13,7 @@
 	<div class="card-header py-3">
 	<div class="d-sm-flex align-items-center justify-content-between mb-2">
     <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Daftar Data Wilayah </h6>
-    <h6 class="btn btn-success" data-toggle="modal" data-target="#modal-Input">
+    <h6 class="btn btn-info" data-toggle="modal" data-target="#modal-Input">
         <i class="fa fa-plus"></i> Tambah Data </h6>
     </div>
 	 </div>
@@ -40,7 +40,7 @@
 						<td align="left"><?php echo $value->nama_wilayah ?></td>
 						<td>
                         <div class="btn-group" role="group">
-							<a href="#" class="btn btn-success btn-sm" onclick="showEditModal(<?= $value->id_wilayah ?>)" title="Edit Data"><i class="fa fa-edit"></i></a>
+							<a href="#" class="btn btn-warning btn-sm" onclick="showEditModal(<?= $value->id_wilayah ?>)" title="Edit Data"><i class="fa fa-edit"></i></a>
 
 								<a  data-toggle="tooltip" data-placement="bottom" title="Hapus Data" href="<?=base_url('Wilayah/destroy/'.$value->id_wilayah)?>" onclick="return confirm ('Apakah anda yakin untuk meghapus data ini')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
 							</div>

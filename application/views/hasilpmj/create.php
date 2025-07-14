@@ -439,7 +439,7 @@
 
             // 5. Validasi minimal harus ada data SPK atau Manual yang valid
             if (!(jumlahBenihSPK > 0 || (jumlahBenihManual > 0 && jumlahIndukManual > 0))) {
-                alert('Isi minimal salah satu data (SPK atau Manual) dengan benar!');
+                alert('isi Data jumlah Harus Lebih Dari 0!');
                 e.preventDefault();
                 return false;
             }

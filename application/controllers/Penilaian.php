@@ -57,28 +57,40 @@ class Penilaian extends CI_Controller
         echo json_encode($alternatifs);
     }
 
-    public function tambah_penilaian() {
+    public function tambah_penilaian()
+    {
         $id_alternatif = $this->input->post('id_alternatif');
-        $id_kriteria = $this->input->post('id_kriteria');
-        $nilai = $this->input->post('nilai');
-        $id_pemijahan = $this->input->post('id_pemijahan');
-        $id_upr = $this->session->userdata('id_upr');
+        $id_kriteria   = $this->input->post('id_kriteria');
+        $nilai         = $this->input->post('nilai');
+        $id_pemijahan  = $this->input->post('id_pemijahan');
+        $id_upr        = $this->session->userdata('id_upr');
 
         if (!$this->Penilaian_model->exists_for_upr($id_pemijahan, $id_upr)) {
             show_error("Waktu pemijahan tidak ditemukan untuk id_upr ini!", 403);
         }
 
-        $i = 0;
-        foreach ($nilai as $key) {
-            $this->Penilaian_model->tambah_penilaian($id_alternatif, $id_kriteria[$i], $key, $id_upr);
-            $i++;
+        $berhasil = true;
+
+        for ($i = 0; $i < count($nilai); $i++) {
+            $sukses = $this->Penilaian_model->tambah_penilaian($id_alternatif, $id_kriteria[$i], $nilai[$i], $id_upr);
+            if (!$sukses) {
+                $berhasil = false;
+                break;
+            }
         }
 
-        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil disimpan!</div>');
+        if ($berhasil) {
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil disimpan!</div>');
+        } else {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal menyimpan data penilaian!</div>');
+        }
+
         redirect('penilaian?id_pemijahan=' . $id_pemijahan);
     }
 
-    public function update_penilaian() {
+
+    public function update_penilaian()
+    {
         $id_alternatif = $this->input->post('id_alternatif');
         $id_kriteria = $this->input->post('id_kriteria');
         $nilai = $this->input->post('nilai');
@@ -100,5 +112,4 @@ class Penilaian extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil diupdate!</div>');
         redirect('penilaian?id_pemijahan=' . $id_pemijahan);
     }
-    
 }

@@ -7,9 +7,16 @@ class Penilaian_model extends CI_Model
 
     public function tambah_penilaian($id_alternatif, $id_kriteria, $nilai, $id_upr)
     {
-        $query = $this->db->simple_query("INSERT INTO penilaian VALUES (DEFAULT, '$id_alternatif', '$id_kriteria', $nilai, '$id_upr');");
-        return $query;
+        $data = [
+            'id_alternatif' => $id_alternatif,
+            'id_kriteria'   => $id_kriteria,
+            'nilai'         => $nilai,
+            'id_upr'        => $id_upr
+        ];
+
+        return $this->db->insert('penilaian', $data);
     }
+
 
     public function edit_penilaian($id_alternatif, $id_kriteria, $nilai, $id_upr)
     {
@@ -22,12 +29,14 @@ class Penilaian_model extends CI_Model
         return $this->db->get('kriteria')->result();
     }
 
-    public function get_kriteria_by_gender($jenis_kelamin) {
+    public function get_kriteria_by_gender($jenis_kelamin)
+    {
         $this->db->where('jenis_kelamin', $jenis_kelamin);
         return $this->db->get('kriteria')->result();
     }
 
-    public function get_sub_kriteria_by_gender($id_kriteria, $jenis_kelamin) {
+    public function get_sub_kriteria_by_gender($id_kriteria, $jenis_kelamin)
+    {
         $this->db->where('id_kriteria', $id_kriteria);
         $this->db->where('jenis_kelamin', $jenis_kelamin);
         return $this->db->get('sub_kriteria')->result();
