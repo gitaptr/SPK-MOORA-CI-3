@@ -13,7 +13,7 @@
     <div class="card-header py-3">
         <div class="d-sm-flex align-items-center justify-content-between mb-2">
             <h6 class="m-0 font-weight-bold text-info"><i class="fa fa-table"></i> Daftar Data UPR </h6>
-            <h6 class="btn btn-info" data-toggle="modal" data-target="#modal-Input">
+            <h6 class="btn btn-success" data-toggle="modal" data-target="#modal-Input">
                 <i class="fa fa-plus"></i> Tambah Data
             </h6>
         </div>
