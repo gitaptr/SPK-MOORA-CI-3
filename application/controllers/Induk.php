@@ -41,7 +41,7 @@ class Induk extends CI_Controller
         log_message('info', 'Data Induk: ' . print_r($data['list'], true));
         log_message('info', 'Data Kolam: ' . print_r($data['kolam_list'], true));
 
-        $this->load->view('Induk/index', $data);
+        $this->load->view('induk/index', $data);
         $this->session->unset_userdata('message');
     }
 

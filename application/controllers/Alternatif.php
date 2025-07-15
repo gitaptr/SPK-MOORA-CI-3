@@ -32,7 +32,7 @@ class Alternatif extends CI_Controller
             'selected_id_pemijahan' => $selected_id_pemijahan
         ];
     
-        $this->load->view('Alternatif/index', $data);
+        $this->load->view('alternatif/index', $data);
         $this->session->unset_userdata('message');
     }
 

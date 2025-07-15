@@ -33,7 +33,7 @@ class Kolam extends CI_Controller
             'list' => $list
         ];
 
-        $this->load->view('Kolam/index', $data);
+        $this->load->view('kolam/index', $data);
     }
 
     public function store()

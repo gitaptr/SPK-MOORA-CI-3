@@ -32,7 +32,7 @@ class Upr extends CI_Controller
             'penyuluh' => $this->Upr_model->get_all_penyuluh(),
             'total_upr' => $this->Upr_model->jumlah_upr(),
         ];
-        $this->load->view('Upr/index', $data);
+        $this->load->view('upr/index', $data);
         $this->session->unset_userdata('message');
     }
 

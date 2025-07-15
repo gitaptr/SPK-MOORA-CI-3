@@ -44,7 +44,7 @@ class User extends CI_Controller
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger">Status tidak valid.</div>');
         }
-        redirect('User');
+        redirect('user');
     }
 
 
@@ -53,7 +53,7 @@ class User extends CI_Controller
         $data['page'] = "User";
         $data['user_level'] = $this->User_model->user_level();
         $data['wilayah'] = $this->User_model->get_all_wilayah(); // Tambahkan data wilayah
-        $this->load->view('User/create', $data);
+        $this->load->view('user/create', $data);
     }
 
     public function store()
@@ -87,7 +87,7 @@ class User extends CI_Controller
             $result = $this->User_model->insert($data);
             if ($result) {
                 $this->session->set_flashdata('message', '<div class="alert alert-success">Data berhasil disimpan!</div>');
-                redirect('User'); // Redirect ke halaman user
+                redirect('user'); // Redirect ke halaman user
             }
         } else {
             // Jika validasi gagal
@@ -95,20 +95,20 @@ class User extends CI_Controller
             $data['user_level'] = $this->User_model->user_level();
             $data['wilayah'] = $this->User_model->get_all_wilayah(); // Pastikan data tetap dikirim ulang
             $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal menyimpan data!</div>');
-            $this->load->view('User/create', $data); // Tampilkan ulang form dengan data
+            $this->load->view('user/create', $data); // Tampilkan ulang form dengan data
         }
     }
 
     public function show($id_user)
     {
-        $User = $this->User_model->show($id_user);
+        $user = $this->User_model->show($id_user);
         $user_level = $this->User_model->user_level();
         $data = [
             'page' => "User",
             'data' => $User,
             'user_level' => $user_level
         ];
-        $this->load->view('User/show', $data);
+        $this->load->view('user/show', $data);
     }
 
     public function edit($id_user)
@@ -123,7 +123,7 @@ class User extends CI_Controller
             'user_level' => $user_level,
             'wilayah' => $wilayah // Kirim data wilayah ke view
         ];
-        $this->load->view('User/edit', $data);
+        $this->load->view('user/edit', $data);
     }
 
     public function update($id_user)
@@ -146,10 +146,10 @@ class User extends CI_Controller
         if ($this->form_validation->run() !== false) {
             $this->User_model->update($id_user, $data);
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil diupdate!</div>');
-            redirect('User');
+            redirect('user');
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal mengupdate data!</div>');
-            redirect('User/edit/' . $id_user);
+            redirect('user/edit/' . $id_user);
         }
     }
 
@@ -157,7 +157,7 @@ class User extends CI_Controller
     {
         $this->User_model->delete($id_user);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil dihapus!</div>');
-        redirect('User');
+        redirect('user');
     }
 
     public function get_user_growth_data($tahun)

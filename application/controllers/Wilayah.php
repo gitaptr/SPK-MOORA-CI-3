@@ -27,7 +27,7 @@
                 'list' => $this->Wilayah_model->tampil(),
                 'total_wilayah' => $this->Wilayah_model->jumlah_wilayahh(),
             ];
-            $this->load->view('Wilayah/index', $data);
+            $this->load->view('wilayah/index', $data);
             $this->session->unset_userdata('message');
         }
     

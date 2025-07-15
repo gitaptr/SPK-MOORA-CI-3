@@ -27,7 +27,7 @@ class Stock extends CI_Controller
         $data['page'] = "Stock";
         $data['list'] = $this->Stock_model->tampil_by_upr($id_upr);
         $data['id_upr'] = $id_upr;        
-        $this->load->view('Stock/index', $data); // Load view dan kirim data
+        $this->load->view('stock/index', $data); // Load view dan kirim data
         $this->session->unset_userdata('message');
     }
 
@@ -177,7 +177,7 @@ class Stock extends CI_Controller
         if ($id_user_level != 3) {
             $id_upr = $this->session->userdata('id_upr');
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Anda tidak berhak mengakses halaman ini!</div>');
-            redirect('Stock');
+            redirect('stock');
         }
 
         // Ambil data UPR

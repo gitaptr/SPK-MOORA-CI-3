@@ -81,7 +81,7 @@ class Perhitungan extends CI_Controller
             'matriks_rb' => $matriks_rb
         ];
 
-        $this->load->view('Perhitungan/perhitungan', $data);
+        $this->load->view('perhitungan/perhitungan', $data);
     }
 
     public function hitung_moora()
@@ -105,7 +105,7 @@ class Perhitungan extends CI_Controller
             $this->session->set_flashdata('error', 'Terjadi kesalahan saat menyimpan hasil.');
         }
 
-        redirect('Perhitungan/index?id_pemijahan=' . $id_pemijahan . '&jenis_kelamin=' . $jenis_kelamin);
+        redirect('perhitungan/index?id_pemijahan=' . $id_pemijahan . '&jenis_kelamin=' . $jenis_kelamin);
     }
 
 
@@ -153,7 +153,7 @@ class Perhitungan extends CI_Controller
             'kriterias' => $this->Perhitungan_model->get_kriteria_by_gender($jenis_kelamin)
         ];
 
-        $this->load->view('Perhitungan/hasil', $data);
+        $this->load->view('perhitungan/hasil', $data);
     }
 
 
@@ -446,7 +446,7 @@ class Perhitungan extends CI_Controller
             'historis' => $historis
         ];
 
-        $this->load->view('Perhitungan/data_historis', $data);
+        $this->load->view('perhitungan/data_historis', $data);
     }
     public function is_historis_exist($id_pemijahan)
     {
@@ -478,7 +478,7 @@ class Perhitungan extends CI_Controller
         } else {
             $this->session->set_flashdata('success', 'Data historis berhasil dihapus.');
         }
-        redirect('Perhitungan/data_historis');
+        redirect('perhitungan/data_historis');
     }
 
 

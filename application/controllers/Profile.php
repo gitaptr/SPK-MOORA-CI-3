@@ -20,7 +20,7 @@
                 'page' => "Profile",
 				'profile' => $profile
             ];
-            $this->load->view('Profile/index', $data);
+            $this->load->view('profile/index', $data);
             $this->session->unset_userdata('message');
         }
     
