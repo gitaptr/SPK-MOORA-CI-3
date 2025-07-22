@@ -50,6 +50,11 @@ class Kriteria_model extends CI_Model
         return $this->db->update('kriteria', $ubah); // Return TRUE jika berhasil, FALSE jika gagal
     }
 
+    public function get_by_jenis_kelamin($jenis_kelamin)
+    {
+        return $this->db->get_where('kriteria', ['jenis_kelamin' => $jenis_kelamin])->result();
+    }
+
 
     public function is_duplicate_kode($kode_kriteria, $exclude_id = null, $jenis_kelamin = null)
     {
@@ -72,7 +77,7 @@ class Kriteria_model extends CI_Model
         return $query->row()->bobot ?? 0;
     }
 
-    public function is_kode_exists($kode_kriteria,$jenis_kelamin, $exclude_id = null )
+    public function is_kode_exists($kode_kriteria, $jenis_kelamin, $exclude_id = null)
     {
         $this->db->where('kode_kriteria', $kode_kriteria);
         $this->db->where('jenis_kelamin', $jenis_kelamin);

@@ -9,6 +9,15 @@
 <?= $this->session->flashdata('message'); ?>
 
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Pengisian dan pendataan kolam yang dimiliki.</strong>
+    <ul class="mt-2 mb-0">
+         <li>Tekan tombol <strong>Tambah Data</strong> dan isi data kolam.</li>
+         <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+    </ul>
+</div>
+
+
 <div class="card shadow mb-4">
     <div class="card-header py-2">
         <div class="d-sm-flex align-items-center justify-content-between mb-2">

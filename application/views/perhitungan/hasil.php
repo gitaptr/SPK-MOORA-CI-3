@@ -16,8 +16,17 @@
     </div>
 </div>
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Melihat hasil akhir perhitungan dan Mengkonfrimasi induk ikan yang akan dipijahkan</strong>
+    <ul class="mt-2 mb-0">
+        <li>Memilih <strong>waktu pemijahan</strong> dan <strong>Jenis Kelamin</strong> terlebih dahulu.</li>
+        <li>Lanjut dengan menekan tombol <strong>Lihat</strong>.</li>
+         <li>Setelah itu, mengkonfimasi induk dengan <strong>mencontreng kotak yang ada pada kolom aksi.</strong></li>
+        <li>Lakukan juga pada jenis kelamin selanjutnya.</li>
+         <li>Jika sudah selesai dan pasti pada kedua jenis kelamin, simpan data dengan menekan tombol <strong>Simpan Ke Historis</strong></li>
+    </ul>
+</div>
 
-<!-- Form Pilihan Waktu Pemijahan -->
 <!-- Form Pilihan Waktu Pemijahan dan Jenis Kelamin -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">

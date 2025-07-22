@@ -4,7 +4,6 @@
 	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-chart-bar"></i> Data Pemijahan</h1>
 
 	<div class="d-flex">
-
 		<?php if ($user_level == 2 && !empty($selected_upr)): ?>
 			<a href="<?= base_url('Pemijahan/cetak_laporan?upr_id=' . $selected_upr) ?>"
 				class="btn btn-primary mr-2"
@@ -12,11 +11,28 @@
 				<i class="fa fa-print"></i> Cetak Data
 			</a>
 		<?php endif; ?>
-
-
 	</div>
 </div>
 
+<?php if ($user_level == 3): ?>
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Data Pemijahan diisi sebelum melakukan pemijahan.</strong>
+    <ul class="mt-2 mb-0">
+       <li>Tekan tombol <strong>Tambah Data</strong> dan isi data pemijahan.</li>
+         <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+    </ul>
+</div>
+<?php endif; ?>
+
+<?php if ($user_level == 2): ?>
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Melihat Rekap Data Pemijahan UPR.</strong>
+    <ul class="mt-2 mb-0">
+       <li><strong>Memilih UPR</strong> yang akan dilihat data pemijahannya terlebih dahulu</li>
+         <li>Lalu Tekan Tombol <strong>Cetak Data</strong> jika ingin mencetak rekap data.</li>
+    </ul>
+</div>
+<?php endif; ?>
 
 <?php if (isset($page) && $page === 'pemijahan'): ?>
 	<?= $this->session->flashdata('message'); ?>

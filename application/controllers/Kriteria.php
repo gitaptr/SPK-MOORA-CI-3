@@ -51,9 +51,34 @@ class Kriteria extends CI_Controller
     public function create()
     {
         $data['page'] = "Kriteria";
-        $data['selected_jenis_kelamin'] = $this->session->userdata('selected_jenis_kelamin');
+        $jenis_kelamin = $this->session->userdata('selected_jenis_kelamin');
+        $data['selected_jenis_kelamin'] = $jenis_kelamin;
+
+        // Tentukan prefix berdasarkan jenis kelamin
+        $prefix = strtolower($jenis_kelamin) === 'betina' ? 'CB' : 'CJ';
+
+        // Ambil semua kriteria berdasarkan jenis kelamin
+        $existing_kriteria = $this->Kriteria_model->get_by_jenis_kelamin($jenis_kelamin);
+
+        // Tentukan nomor terakhir
+        $last_number = 0;
+        foreach ($existing_kriteria as $kriteria) {
+            if (strpos($kriteria->kode_kriteria, $prefix) === 0) {
+                $number = intval(substr($kriteria->kode_kriteria, strlen($prefix)));
+                if ($number > $last_number) {
+                    $last_number = $number;
+                }
+            }
+        }
+        $next_number = $last_number + 1;
+        $kode_kriteria = $prefix . $next_number;
+
+        // Kirim ke view
+        $data['kode_kriteria'] = $kode_kriteria;
+
         $this->load->view('kriteria/create', $data);
     }
+
 
     //menambahkan data ke database
     public function store()
@@ -63,9 +88,12 @@ class Kriteria extends CI_Controller
 
         // Validasi input
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
-        $this->form_validation->set_rules('kode_kriteria', 'Kode Kriteria', 'required');
         $this->form_validation->set_rules('bobot', 'Bobot', 'required|numeric|greater_than[0]|less_than_equal_to[1]');
         $this->form_validation->set_rules('jenis', 'Jenis', 'required');
+
+        $this->form_validation->set_message('less_than_equal_to', 'Bobot tidak boleh lebih dari 1.0');
+        $this->form_validation->set_message('greater_than', 'Bobot harus lebih dari 0');
+        $this->form_validation->set_message('numeric', 'Bobot harus berupa angka');
 
         if ($this->form_validation->run() == false) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . validation_errors() . '</div>');
@@ -73,11 +101,29 @@ class Kriteria extends CI_Controller
             return;
         }
 
-        // Ambil data dari form
-        $kode_kriteria = $this->input->post('kode_kriteria');
-        $bobot = round(floatval($this->input->post('bobot')), 6); // Pastikan float dan bulatkan hingga 6 desimal
+        // Ambil dan proses nilai bobot
+        $bobot = round(floatval($this->input->post('bobot')), 6);
 
-        // Cek duplikasi kode
+        // Tentukan prefix berdasarkan jenis kelamin
+        $prefix = strtolower($jenis_kelamin) === 'betina' ? 'CB' : 'CJ';
+
+        // Ambil semua kriteria yang sudah ada untuk jenis kelamin ini
+        $existing_kriteria = $this->Kriteria_model->get_by_jenis_kelamin($jenis_kelamin);
+
+        // Cari nomor urut tertinggi dari kode kriteria yang sudah ada
+        $last_number = 0;
+        foreach ($existing_kriteria as $kriteria) {
+            if (strpos($kriteria->kode_kriteria, $prefix) === 0) {
+                $number = intval(substr($kriteria->kode_kriteria, strlen($prefix)));
+                if ($number > $last_number) {
+                    $last_number = $number;
+                }
+            }
+        }
+        $next_number = $last_number + 1;
+        $kode_kriteria = $prefix . $next_number;
+
+        // Cek duplikasi kode (jika ada konflik tak terduga)
         if ($this->Kriteria_model->is_duplicate_kode($kode_kriteria)) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Kode Kriteria sudah digunakan!</div>');
             redirect('Kriteria/create');
@@ -94,30 +140,29 @@ class Kriteria extends CI_Controller
             return;
         }
 
-        // Data yang akan dimasukkan ke database
+        // Siapkan data untuk disimpan
         $data = [
-            'keterangan' => $this->input->post('keterangan'),
-            'kode_kriteria' => $kode_kriteria,
-            'bobot' => $bobot,
-            'jenis' => $this->input->post('jenis'),
-            'jenis_kelamin' => $jenis_kelamin, // Ambil dari session
+            'keterangan'     => $this->input->post('keterangan'),
+            'kode_kriteria'  => $kode_kriteria,
+            'bobot'          => $bobot,
+            'jenis'          => $this->input->post('jenis'),
+            'jenis_kelamin'  => $jenis_kelamin
         ];
 
         // Simpan ke database
         if ($this->Kriteria_model->insert($data)) {
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil disimpan!</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil disimpan dengan kode <strong>' . $kode_kriteria . '</strong>!</div>');
         } else {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal menyimpan data!</div>');
         }
 
-        // Redirect ke halaman yang sesuai dengan jenis kelamin yang dipilih
+        // Redirect sesuai jenis kelamin
         if ($jenis_kelamin) {
             redirect('Kriteria?jenis_kelamin=' . $jenis_kelamin);
         } else {
             redirect('Kriteria');
         }
     }
-
 
     public function edit($id_kriteria)
     {
@@ -127,36 +172,23 @@ class Kriteria extends CI_Controller
         $this->load->view('kriteria/edit', $data);
     }
 
+
     // Pada function update di controller Kriteria:
     public function update($id_kriteria)
     {
-        // Ambil jenis kelamin dari session
         $jenis_kelamin = $this->session->userdata('selected_jenis_kelamin');
 
-        // Validasi input
         $this->form_validation->set_rules('keterangan', 'Keterangan', 'required');
-        $this->form_validation->set_rules('kode_kriteria', 'Kode Kriteria', 'required');
         $this->form_validation->set_rules('bobot', 'Bobot', 'required|numeric|greater_than[0]|less_than_equal_to[1]');
         $this->form_validation->set_rules('jenis', 'Jenis', 'required');
 
-        // Cek duplikasi kode kriteria
-        $kode_kriteria = $this->input->post('kode_kriteria');
-        if ($this->Kriteria_model->is_duplicate_kode($kode_kriteria, $id_kriteria)) {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger">Kode Kriteria sudah digunakan.</div>');
-            redirect('Kriteria/edit/' . $id_kriteria);
-            return;
-        }
-
-        // Cek total bobot dengan pembulatan untuk menghindari floating-point error
-        $bobot = floatval($this->input->post('bobot')); // Konversi eksplisit ke float
-        $bobot_lama = floatval($this->Kriteria_model->show($id_kriteria)->bobot);
-        $total_bobot = round($this->Kriteria_model->get_total_bobot_by_jenis_kelamin($jenis_kelamin) - $bobot_lama + $bobot, 6); // Dibulatkan ke 6 desimal
-
-        if ($total_bobot > 1.0) {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger">Total bobot kriteria tidak boleh lebih dari 1.0. (Saat ini: ' . $total_bobot . ')</div>');
-            redirect('Kriteria/edit/' . $id_kriteria);
-            return;
-        }
+        // Ubah pesan validasi (jika ingin custom)
+        $this->form_validation->set_message([
+            'less_than_equal_to' => '{field} tidak boleh lebih dari 1.0',
+            'greater_than'       => '{field} harus lebih dari 0',
+            'numeric'            => '{field} harus berupa angka',
+            'required'           => '{field} wajib diisi'
+        ]);
 
         if ($this->form_validation->run() == false) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger">Validasi gagal: ' . validation_errors() . '</div>');
@@ -164,40 +196,45 @@ class Kriteria extends CI_Controller
             return;
         }
 
-        // Ambil data dari form
+        $kode_kriteria = $this->input->post('kode_kriteria');
+        $bobot         = floatval($this->input->post('bobot'));
+        $bobot_lama    = floatval($this->Kriteria_model->show($id_kriteria)->bobot);
+
+        // Cek duplikasi kode jika diganti secara manual (opsional, bisa dihapus jika read-only)
+        if ($this->Kriteria_model->is_duplicate_kode($kode_kriteria, $id_kriteria)) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger">Kode Kriteria sudah digunakan.</div>');
+            redirect('Kriteria/edit/' . $id_kriteria);
+            return;
+        }
+
+        // Hitung ulang total bobot setelah perubahan
+        $total_bobot = round($this->Kriteria_model->get_total_bobot_by_jenis_kelamin($jenis_kelamin) - $bobot_lama + $bobot, 6);
+
+        if ($total_bobot > 1.0) {
+            $this->session->set_flashdata('message', '<div class="alert alert-danger">Total bobot kriteria tidak boleh lebih dari 1.0. (Saat ini: ' . $total_bobot . ')</div>');
+            redirect('Kriteria/edit/' . $id_kriteria);
+            return;
+        }
+
+        // Siapkan data update
         $data = [
-            'keterangan' => $this->input->post('keterangan'),
-            'kode_kriteria' => $this->input->post('kode_kriteria'),
-            'bobot' => $bobot, // Gunakan bobot yang telah dikonversi ke float
-            'jenis' => $this->input->post('jenis'),
-            'jenis_kelamin' => $jenis_kelamin, // Ambil dari session
+            'keterangan'     => $this->input->post('keterangan'),
+            'kode_kriteria'  => $kode_kriteria, // tetap sama, readonly
+            'bobot'          => $bobot,
+            'jenis'          => $this->input->post('jenis'),
+            'jenis_kelamin'  => $jenis_kelamin
         ];
 
-        // Proses update ke database
+        // Lakukan update
         if ($this->Kriteria_model->update($id_kriteria, $data)) {
             $this->session->set_flashdata('message', '<div class="alert alert-success">Data berhasil diperbarui!</div>');
         } else {
-            $this->session->set_flashdata('message', '<div class="alert alert-danger">Data gagal diperbarui. Silakan coba lagi.</div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-danger">Gagal memperbarui data.</div>');
         }
 
-        // Redirect ke halaman yang sesuai dengan jenis kelamin yang dipilih
-        if ($jenis_kelamin) {
-            redirect('Kriteria?jenis_kelamin=' . $jenis_kelamin);
-        } else {
-            redirect('Kriteria');
-        }
+        redirect('Kriteria?jenis_kelamin=' . $jenis_kelamin);
     }
 
-    public function check_duplicate_kode()
-    {
-        $kode_kriteria = $this->input->get('kode_kriteria');
-        $exclude_id = $this->input->get('exclude_id');
-        $jenis_kelamin = $this->input->get('jenis_kelamin');
-
-        $is_duplicate = $this->Kriteria_model->is_kode_exists($kode_kriteria, $exclude_id, $jenis_kelamin);
-
-        echo json_encode(['is_duplicate' => $is_duplicate]);
-    }
 
     public function get_total_bobot_by_jenis_kelamin()
     {

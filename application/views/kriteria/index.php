@@ -2,11 +2,6 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 	<h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list-alt"></i> Data Kriteria</h1>
-	<?php if (!$read_only): ?> <!-- Hanya tampilkan jika bukan read-only -->
-		<a href="<?= base_url('Kriteria/create'); ?>" id="tambahDataBtn" class="btn btn-success" disabled>
-			<i class="fa fa-plus"></i> Tambah Data
-		</a>
-	<?php endif; ?>
 </div>
 
 <div class="card shadow mb-4">
@@ -27,6 +22,7 @@
 		</div>
 	</div>
 </div>
+
 
 <script>
 	// Fungsi untuk mengontrol tombol "Tambah Data"
@@ -63,8 +59,15 @@
 
 <div class="card shadow mb-4">
 	<!-- /.card-header -->
-	<div class="card-header py-3">
+	<div class="card-header py-3 d-sm-flex align-items-center justify-content-between mb-4">
 		<h6 class="m-0 font-weight-bold text-info"></i> Daftar Data Kriteria</h6>
+		<div class="d-flex">
+			<?php if (!$read_only): ?> <!-- Hanya tampilkan jika bukan read-only -->
+				<a href="<?= base_url('Kriteria/create'); ?>" id="tambahDataBtn" class="btn btn-success" disabled>
+					<i class="fa fa-plus"></i> Tambah Data
+				</a>
+			<?php endif; ?>
+		</div>
 	</div>
 
 	<div class="card-body">

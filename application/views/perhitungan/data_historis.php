@@ -2,7 +2,13 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-history"></i> Historis Hasil Akhir</h1>
-    
+</div>
+
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Data hasil akhir yang telah dilakukan dan tersimpan</strong>
+    <ul class="mt-2 mb-0">
+       <li>Tekan tombol <strong>Detail</strong> pada kolom aksi untuk melihat detail dari hasil akhir.</li>
+    </ul>
 </div>
 
 <div class="card shadow mb-4">

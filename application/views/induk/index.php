@@ -7,6 +7,13 @@
 <?= $this->session->flashdata('message'); ?>
 
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Pengisian dan pendataan data induk ikan yang dimiliki pada setiap kolam.</strong>
+    <ul class="mt-2 mb-0">
+         <li>Tekan tombol <strong>Tambah Data</strong> dan isi data induk ikan.</li>
+         <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+    </ul>
+</div>
 
 <!-- /.card-header -->
 
@@ -39,7 +46,7 @@
                         <tr align="center">
                             <td><?= $no ?></td>
                             <td><?php echo $value->jenis_kelamin ?></td>
-                            <td><?php echo $value->jumlah ?></td>
+                            <td><?php echo $value->jumlah ?> ekor</td>
                             <td><?php echo $value->kode_kolam; ?></td>
                             <td>
                                 <div class="btn-group" role="group">

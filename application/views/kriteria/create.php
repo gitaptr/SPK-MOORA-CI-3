@@ -10,6 +10,16 @@
 
 <?= $this->session->flashdata('message'); ?>
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Pengisian Data Kriteria.</strong>
+    <ul class="mt-2 mb-0">
+        <li><strong>Kode kriteria</strong> akan terisi otomatis.</li>
+        <li>Untuk <strong>bobot kriteria</strong> tidak boleh bernilai lebih dari <strong>1</strong> (0.01-0.9)</li>
+        <li>Untuk jenis kriteria <strong>Benefit</strong> dipilih jika kriteria bersifat menguntungkan.</li>
+        <li>Untuk jenis kriteria <strong>Cost</strong> dipilih jika kriteria bersifat merugikan.</li>
+    </ul>
+</div>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-fw fa-plus"></i> Tambah Data Kriteria</h6>
@@ -19,9 +29,9 @@
     <div class="card-body">
         <div class="row">
             <div class="form-group col-md-6">
-                <label class="font-weight-bold">Kode Kriteria</label>
-                <input autocomplete="off" type="text" id="kode_kriteria" name="kode_kriteria" required class="form-control" />
-                <small id="kode_kriteria_error" class="text-danger"></small> <!-- Untuk menampilkan pesan error -->
+                <label class="font-weight-bold">Kode Kriteria (Otomatis)</label>
+                <input type="text" class="form-control" name="kode_kriteria_display" id="kode_kriteria_display" readonly value="<?= isset($kode_kriteria) ? $kode_kriteria : '' ?>">
+                <input type="hidden" name="kode_kriteria" id="kode_kriteria" value="<?= isset($kode_kriteria) ? $kode_kriteria : '' ?>">
             </div>
 
             <div class="form-group col-md-6">
@@ -34,7 +44,6 @@
                 <input autocomplete="off" type="number" id="bobot_kriteria" name="bobot" step="0.01" min="0.01" required class="form-control" />
                 <small id="bobot_kriteria_error" class="text-danger"></small> <!-- Untuk menampilkan pesan error -->
             </div>
-
 
             <div class="form-group col-md-6">
                 <label class="font-weight-bold">Jenis Kriteria</label>

@@ -23,9 +23,9 @@
         <div class="row">
             <?php echo form_hidden('id_kriteria', $kriteria->id_kriteria) ?>
             <div class="form-group col-md-6">
-                <label class="font-weight-bold">Kode Kriteria</label>
-                <input autocomplete="off" type="text" id="kode_kriteria" name="kode_kriteria" value="<?php echo $kriteria->kode_kriteria ?>" required class="form-control" />
-                <small id="kode_kriteria_error" class="text-danger"></small>
+                <label class="font-weight-bold">Kode Kriteria (Otomatis)</label>
+                <input type="text" class="form-control" name="kode_kriteria_display" id="kode_kriteria_display" value="<?= $kriteria->kode_kriteria ?>" readonly>
+                <input type="hidden" name="kode_kriteria" value="<?= $kriteria->kode_kriteria ?>">
             </div>
 
             <div class="form-group col-md-6">

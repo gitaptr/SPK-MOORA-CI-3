@@ -9,6 +9,9 @@
 </div>
 
 <?= $this->session->flashdata('message'); ?>
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> Induk Manual diisi jika ada hasil pemijahan dari induk yang dipilih secara manual jika tidak ada dikosongkan saja.
+</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">

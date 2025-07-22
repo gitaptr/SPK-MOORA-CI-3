@@ -8,6 +8,17 @@
 
 <?= $this->session->flashdata('message'); ?>
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Pengisian calon induk ikan yang akan digunakan dalam pemijahan.</strong>
+    <ul class="mt-2 mb-0">
+        <li>Memilih <strong>waktu pemijahan</strong> terlebih dahulu dan tekan tombol <strong>Pilih</strong>.</li>
+        <li>Setelah memilih waktu pemijahan tombol Tambah Data akan aktif.</li>
+        <li>Lanjut tekan tombol <strong>Tambah Data Alternatif</strong> dan mengisi data calon induk.</li>
+        <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+    </ul>
+</div>
+
+
 
 <!-- Form untuk memilih waktu pemijahan -->
 <div class="card shadow mb-4">
@@ -193,29 +204,29 @@
 
 <?php $this->load->view('layouts/footer_admin'); ?>
 <script>
-function showEditModal(id) {
-    $.ajax({
-        url: "<?= base_url('Alternatif/get_alternatif_by_id/') ?>" + id,
-        type: 'GET',
-        data: {
-            id_alternatif: id
-        },
-        dataType: 'json',
-        success: function(data) {
-            // Isi data ke input form di modal
-            $('#edit_id_alternatif').val(data.id_alternatif);
-            $('#edit_nama').val(data.nama);
-            $('#edit_kolam').val(data.kolam);
-            $('#edit_jenis_kelamin').val(data.jenis_kelamin); // Isi jenis kelamin
+    function showEditModal(id) {
+        $.ajax({
+            url: "<?= base_url('Alternatif/get_alternatif_by_id/') ?>" + id,
+            type: 'GET',
+            data: {
+                id_alternatif: id
+            },
+            dataType: 'json',
+            success: function(data) {
+                // Isi data ke input form di modal
+                $('#edit_id_alternatif').val(data.id_alternatif);
+                $('#edit_nama').val(data.nama);
+                $('#edit_kolam').val(data.kolam);
+                $('#edit_jenis_kelamin').val(data.jenis_kelamin); // Isi jenis kelamin
 
-            // Tampilkan modal
-            $('#modal-Edit').modal('show');
-        },
-        error: function() {
-            alert('Gagal mengambil data. Silakan coba lagi.');
-        }
-    });
-}
+                // Tampilkan modal
+                $('#modal-Edit').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil data. Silakan coba lagi.');
+            }
+        });
+    }
 </script>
 
 </body>

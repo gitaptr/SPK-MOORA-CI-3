@@ -4,6 +4,17 @@
     <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-calculator"></i> Data Perhitungan</h1>
 </div>
 
+
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Melakukan Perhitungan pada calon induk ikan yang sudah diberi nilai</strong>
+    <ul class="mt-2 mb-0">
+        <li>Memilih <strong>waktu pemijahan</strong> dan <strong>Jenis Kelamin</strong> terlebih dahulu.</li>
+        <li>Lanjut dengan menekan tombol <strong>Hitung</strong>.</li>
+        <li>Lakukan juga pada jenis kelamin selanjutnya.</li>
+         <li>Setelah itu, bisa langsung melihat hasil akhir dengan menekan tombol <strong>Lihat Detail Hasil Akhir</strong></li>
+    </ul>
+</div>
+
 <!-- Form Pilihan Waktu Pemijahan dan Jenis Kelamin -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">

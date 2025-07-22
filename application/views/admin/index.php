@@ -61,6 +61,8 @@
         </div>
         <div class="row">
 
+
+
             <div class="col-xl-4 col-md-4 mb-4">
                 <div class="card modern-card shadow">
                     <div class="card-header bg-primary">Jumlah Wilayah</div>
@@ -206,10 +208,23 @@
             <h1 class="h5 mb-0 text-gray-800"><i class="fas fa-fw fa-home"></i> Dashboard</h1>
         </div>
 
-        <!-- Content Row -->
+         <!-- Content Row -->
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             Selamat datang <span class="text-uppercase"><b><?= $this->session->username; ?>!</b></span>. Anda bisa mengoperasikan sistem dengan wewenang tertentu melalui pilihan menu di samping.
+        </div>
+
+        <div class="col-12 mb-4">
+            <div class="alert alert-info mb-0">
+                <i class="fas fa-info-circle"></i> <strong>Langkah Penggunaan Aplikasi</strong>
+                <ol class="mt-2 mb-0">
+                    <li><strong>Isi Data Kriteria</strong> terlebih dahulu jika data Kriteria belum tersedia di sistem.</li>
+                    <li><strong>Isi Data Sub Kriteria</strong> terlebih dahulu jika data Sub Kriteria belum tersedia di sistem.</li>
+                    <li><strong>Data UPR</strong> untuk melihat rekap data kolam, induk, induk betina jantan dan benih yang dimiliki masing-masing UPR</li>
+                    <li><strong>Data Pemijahan</strong> untuk melihat rekap data pemijahan yang telah dilakukan oleh masing-masing UPR</li>
+                    <li><strong>Data Hasil Pemijahan</strong> untuk melihat rekap data hasil pemijahan yang telah dimiliki oleh masing-masing UPR</li>
+                </ol>
+            </div>
         </div>
 
         <div class="row">
@@ -273,309 +288,308 @@
 <?php endif; ?>
 
 <script>
-        function updategrafikPemijahanUPR(year) {
-            fetch(`<?= base_url('Pemijahan/grafik_pemijahan_per_upr/') ?>${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    let chartDom = document.getElementById("grafikPemijahanUPR");
-                    let myChart = echarts.init(chartDom);
+    function updategrafikPemijahanUPR(year) {
+        fetch(`<?= base_url('Pemijahan/grafik_pemijahan_per_upr/') ?>${year}`)
+            .then(response => response.json())
+            .then(data => {
+                let chartDom = document.getElementById("grafikPemijahanUPR");
+                let myChart = echarts.init(chartDom);
 
-                    if (data.length === 0) {
-                        // Tampilkan pesan jika data kosong
-                        let option = {
-                            title: {
-                                text: 'Tidak ada data untuk tahun ini',
-                                left: 'center',
-                                top: 'center',
-                                textStyle: {
-                                    fontSize: 16,
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            xAxis: {
-                                show: false
-                            },
-                            yAxis: {
-                                show: false
-                            },
-                            series: []
-                        };
-                        myChart.setOption(option);
-                        return;
+                if (data.length === 0) {
+                    // Tampilkan pesan jika data kosong
+                    let option = {
+                        title: {
+                            text: 'Tidak ada data untuk tahun ini',
+                            left: 'center',
+                            top: 'center',
+                            textStyle: {
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        xAxis: {
+                            show: false
+                        },
+                        yAxis: {
+                            show: false
+                        },
+                        series: []
+                    };
+                    myChart.setOption(option);
+                    return;
+                }
+
+                // Kelompokkan data berdasarkan UPR
+                let uprMap = {};
+                data.forEach(item => {
+                    if (!uprMap[item.nama_upr]) {
+                        uprMap[item.nama_upr] = [];
                     }
+                    uprMap[item.nama_upr].push({
+                        bulan: item.bulan,
+                        total_pemijahan: item.total_pemijahan
+                    });
+                });
 
-                    // Kelompokkan data berdasarkan UPR
-                    let uprMap = {};
-                    data.forEach(item => {
-                        if (!uprMap[item.nama_upr]) {
-                            uprMap[item.nama_upr] = [];
+                // Buat labels bulan (Januari - Desember)
+                let bulanLabels = Array.from({
+                    length: 12
+                }, (_, i) => getMonthName(i + 1));
+
+                // Buat series untuk setiap UPR
+                let seriesData = Object.keys(uprMap).map(upr => {
+                    let dataPerBulan = Array(12).fill(0); // Inisialisasi array untuk 12 bulan
+                    uprMap[upr].forEach(item => {
+                        dataPerBulan[item.bulan - 1] = item.total_pemijahan; // Isi data sesuai bulan
+                    });
+
+                    return {
+                        name: upr,
+                        type: 'bar',
+                        data: dataPerBulan,
+                        barWidth: '60%',
+                        itemStyle: {
+                            color: getRandomColor() // Warna acak untuk setiap UPR
+                        },
+                        label: {
+                            show: true,
+                            position: 'top'
                         }
-                        uprMap[item.nama_upr].push({
-                            bulan: item.bulan,
-                            total_pemijahan: item.total_pemijahan
-                        });
-                    });
-
-                    // Buat labels bulan (Januari - Desember)
-                    let bulanLabels = Array.from({
-                        length: 12
-                    }, (_, i) => getMonthName(i + 1));
-
-                    // Buat series untuk setiap UPR
-                    let seriesData = Object.keys(uprMap).map(upr => {
-                        let dataPerBulan = Array(12).fill(0); // Inisialisasi array untuk 12 bulan
-                        uprMap[upr].forEach(item => {
-                            dataPerBulan[item.bulan - 1] = item.total_pemijahan; // Isi data sesuai bulan
-                        });
-
-                        return {
-                            name: upr,
-                            type: 'bar',
-                            data: dataPerBulan,
-                            barWidth: '60%',
-                            itemStyle: {
-                                color: getRandomColor() // Warna acak untuk setiap UPR
-                            },
-                            label: {
-                                show: true,
-                                position: 'top'
-                            }
-                        };
-                    });
-
-                    let option = {
-                        tooltip: {
-                            trigger: "axis",
-                            axisPointer: {
-                                type: "shadow"
-                            }
-                        },
-                        legend: {
-                            bottom: 0,
-                            data: Object.keys(uprMap) // Menampilkan legenda berdasarkan UPR
-                        },
-                        xAxis: {
-                            type: "category",
-                            data: bulanLabels,
-                            axisLabel: {
-                                fontSize: 12,
-                                rotate: 25
-                            }
-                        },
-                        yAxis: {
-                            type: "value",
-                            name: "Total Pemijahan",
-                            minInterval: 1
-                        },
-                        series: seriesData
                     };
+                });
 
-                    myChart.setOption(option);
-                })
-                .catch(error => console.error("Error fetching data:", error));
-        }
-
-        function updategrafikBenihUPR(year) {
-            fetch(`<?= base_url('hasilpmj/grafik_benih_per_upr/') ?>${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    let chartDom = document.getElementById("grafikBenihUPR");
-                    let myChart = echarts.init(chartDom);
-
-                    if (data.length === 0) {
-                        // Tampilkan pesan jika data kosong
-                        let option = {
-                            title: {
-                                text: 'Tidak ada data untuk tahun ini',
-                                left: 'center',
-                                top: 'center',
-                                textStyle: {
-                                    fontSize: 16,
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            xAxis: {
-                                show: false
-                            },
-                            yAxis: {
-                                show: false
-                            },
-                            series: []
-                        };
-                        myChart.setOption(option);
-                        return;
-                    }
-
-                    // Kelompokkan data berdasarkan UPR
-                    let uprMap = {};
-                    data.forEach(item => {
-                        if (!uprMap[item.nama_upr]) {
-                            uprMap[item.nama_upr] = [];
+                let option = {
+                    tooltip: {
+                        trigger: "axis",
+                        axisPointer: {
+                            type: "shadow"
                         }
-                        uprMap[item.nama_upr].push({
-                            bulan: item.bulan,
-                            total_benih: item.total_benih
-                        });
-                    });
+                    },
+                    legend: {
+                        bottom: 0,
+                        data: Object.keys(uprMap) // Menampilkan legenda berdasarkan UPR
+                    },
+                    xAxis: {
+                        type: "category",
+                        data: bulanLabels,
+                        axisLabel: {
+                            fontSize: 12,
+                            rotate: 25
+                        }
+                    },
+                    yAxis: {
+                        type: "value",
+                        name: "Total Pemijahan",
+                        minInterval: 1
+                    },
+                    series: seriesData
+                };
 
-                    // Buat labels bulan (Januari - Desember)
-                    let bulanLabels = Array.from({
-                        length: 12
-                    }, (_, i) => getMonthName(i + 1));
+                myChart.setOption(option);
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    }
 
-                    // Buat series untuk setiap UPR
-                    let seriesData = Object.keys(uprMap).map(upr => {
-                        let dataPerBulan = Array(12).fill(0); // Inisialisasi array untuk 12 bulan
-                        uprMap[upr].forEach(item => {
-                            dataPerBulan[item.bulan - 1] = item.total_benih; // Isi data sesuai bulan
-                        });
+    function updategrafikBenihUPR(year) {
+        fetch(`<?= base_url('hasilpmj/grafik_benih_per_upr/') ?>${year}`)
+            .then(response => response.json())
+            .then(data => {
+                let chartDom = document.getElementById("grafikBenihUPR");
+                let myChart = echarts.init(chartDom);
 
-                        return {
-                            name: upr,
-                            type: 'bar',
-                            data: dataPerBulan,
-                            barWidth: '60%',
-                            itemStyle: {
-                                color: getRandomColor() // Warna acak untuk setiap UPR
-                            },
-                            label: {
-                                show: true,
-                                position: 'top'
-                            }
-                        };
-                    });
-
+                if (data.length === 0) {
+                    // Tampilkan pesan jika data kosong
                     let option = {
-                        tooltip: {
-                            trigger: "axis",
-                            axisPointer: {
-                                type: "shadow"
+                        title: {
+                            text: 'Tidak ada data untuk tahun ini',
+                            left: 'center',
+                            top: 'center',
+                            textStyle: {
+                                fontSize: 16,
+                                fontWeight: 'bold'
                             }
-                        },
-                        legend: {
-                            bottom: 0,
-                            data: Object.keys(uprMap) // Menampilkan legenda berdasarkan UPR
                         },
                         xAxis: {
-                            type: "category",
-                            data: bulanLabels,
-                            axisLabel: {
-                                fontSize: 12,
-                                rotate: 25
-                            }
+                            show: false
                         },
                         yAxis: {
-                            type: "value",
-                            name: "Total Benih",
-                            minInterval: 1
+                            show: false
                         },
-                        series: seriesData
+                        series: []
                     };
-
                     myChart.setOption(option);
-                })
-                .catch(error => console.error("Error fetching data:", error));
-        }
+                    return;
+                }
 
-        function updategrafikKolamUPR(year) {
-            fetch(`<?= base_url('kolam/grafik_kolam_per_upr/') ?>${year}`)
-                .then(response => response.json())
-                .then(data => {
-                    let chartDom = document.getElementById("grafikKolamUPR");
-                    let myChart = echarts.init(chartDom);
-
-                    if (!Array.isArray(data) || data.length === 0) {
-                        // Tampilkan pesan jika data kosong
-                        let option = {
-                            title: {
-                                text: 'Tidak ada data untuk tahun ini',
-                                left: 'center',
-                                top: 'center',
-                                textStyle: {
-                                    fontSize: 16,
-                                    fontWeight: 'bold'
-                                }
-                            },
-                            xAxis: {
-                                show: false
-                            },
-                            yAxis: {
-                                show: false
-                            },
-                            series: []
-                        };
-                        myChart.setOption(option);
-                        return;
+                // Kelompokkan data berdasarkan UPR
+                let uprMap = {};
+                data.forEach(item => {
+                    if (!uprMap[item.nama_upr]) {
+                        uprMap[item.nama_upr] = [];
                     }
+                    uprMap[item.nama_upr].push({
+                        bulan: item.bulan,
+                        total_benih: item.total_benih
+                    });
+                });
 
-                    let labels = [];
-                    let jumlahKolam = [];
-                    let luasKolam = [];
+                // Buat labels bulan (Januari - Desember)
+                let bulanLabels = Array.from({
+                    length: 12
+                }, (_, i) => getMonthName(i + 1));
 
-                    data.forEach(item => {
-                        labels.push(item.nama_upr);
-                        jumlahKolam.push(item.total_kolam);
-                        luasKolam.push(item.total_luas);
+                // Buat series untuk setiap UPR
+                let seriesData = Object.keys(uprMap).map(upr => {
+                    let dataPerBulan = Array(12).fill(0); // Inisialisasi array untuk 12 bulan
+                    uprMap[upr].forEach(item => {
+                        dataPerBulan[item.bulan - 1] = item.total_benih; // Isi data sesuai bulan
                     });
 
-                    let option = {
-                        tooltip: {
-                            trigger: "axis",
-                            axisPointer: {
-                                type: "shadow"
-                            }
+                    return {
+                        name: upr,
+                        type: 'bar',
+                        data: dataPerBulan,
+                        barWidth: '60%',
+                        itemStyle: {
+                            color: getRandomColor() // Warna acak untuk setiap UPR
                         },
-                        legend: {
-                            top: "10%",
-                            left: "center",
-                            data: ["Jumlah Kolam", "Luas Kolam (m²)"]
+                        label: {
+                            show: true,
+                            position: 'top'
+                        }
+                    };
+                });
+
+                let option = {
+                    tooltip: {
+                        trigger: "axis",
+                        axisPointer: {
+                            type: "shadow"
+                        }
+                    },
+                    legend: {
+                        bottom: 0,
+                        data: Object.keys(uprMap) // Menampilkan legenda berdasarkan UPR
+                    },
+                    xAxis: {
+                        type: "category",
+                        data: bulanLabels,
+                        axisLabel: {
+                            fontSize: 12,
+                            rotate: 25
+                        }
+                    },
+                    yAxis: {
+                        type: "value",
+                        name: "Total Benih",
+                        minInterval: 1
+                    },
+                    series: seriesData
+                };
+
+                myChart.setOption(option);
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    }
+
+    function updategrafikKolamUPR(year) {
+        fetch(`<?= base_url('kolam/grafik_kolam_per_upr/') ?>${year}`)
+            .then(response => response.json())
+            .then(data => {
+                let chartDom = document.getElementById("grafikKolamUPR");
+                let myChart = echarts.init(chartDom);
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    // Tampilkan pesan jika data kosong
+                    let option = {
+                        title: {
+                            text: 'Tidak ada data untuk tahun ini',
+                            left: 'center',
+                            top: 'center',
+                            textStyle: {
+                                fontSize: 16,
+                                fontWeight: 'bold'
+                            }
                         },
                         xAxis: {
-                            type: "category",
-                            data: labels,
-                            axisLabel: {
-                                rotate: 30
-                            }
+                            show: false
                         },
                         yAxis: {
-                            type: "value",
-                            name: "Jumlah / Luas (m²)",
-                            min: 0
+                            show: false
                         },
-                        series: [{
-                                name: "Jumlah Kolam",
-                                type: "bar",
-                                data: jumlahKolam,
-                                stack: "total",
-                                barWidth: "30%",
-                                itemStyle: {
-                                    color: "#3FCB36"
-                                }
-                            },
-                            {
-                                name: "Luas Kolam (m²)",
-                                type: "bar",
-                                data: luasKolam,
-                                stack: "total",
-                                barWidth: "30%",
-                                itemStyle: {
-                                    color: "#FF9538"
-                                }
-                            }
-                        ]
+                        series: []
                     };
-
                     myChart.setOption(option);
-                })
-                .catch(error => console.error("Error fetching data:", error));
-        }
+                    return;
+                }
 
-        // Fungsi untuk mendapatkan nama bulan
-        function getMonthName(monthNumber) {
-            const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            return months[monthNumber - 1];
-        }
-    });
+                let labels = [];
+                let jumlahKolam = [];
+                let luasKolam = [];
+
+                data.forEach(item => {
+                    labels.push(item.nama_upr);
+                    jumlahKolam.push(item.total_kolam);
+                    luasKolam.push(item.total_luas);
+                });
+
+                let option = {
+                    tooltip: {
+                        trigger: "axis",
+                        axisPointer: {
+                            type: "shadow"
+                        }
+                    },
+                    legend: {
+                        top: "10%",
+                        left: "center",
+                        data: ["Jumlah Kolam", "Luas Kolam (m²)"]
+                    },
+                    xAxis: {
+                        type: "category",
+                        data: labels,
+                        axisLabel: {
+                            rotate: 30
+                        }
+                    },
+                    yAxis: {
+                        type: "value",
+                        name: "Jumlah / Luas (m²)",
+                        min: 0
+                    },
+                    series: [{
+                            name: "Jumlah Kolam",
+                            type: "bar",
+                            data: jumlahKolam,
+                            stack: "total",
+                            barWidth: "30%",
+                            itemStyle: {
+                                color: "#3FCB36"
+                            }
+                        },
+                        {
+                            name: "Luas Kolam (m²)",
+                            type: "bar",
+                            data: luasKolam,
+                            stack: "total",
+                            barWidth: "30%",
+                            itemStyle: {
+                                color: "#FF9538"
+                            }
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    }
+
+    // Fungsi untuk mendapatkan nama bulan
+    function getMonthName(monthNumber) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+        return months[monthNumber - 1];
+    };
 </script>
 
 <!-- Grafik Pemijahan UPR -->
@@ -879,6 +893,23 @@
             Selamat datang <span class="text-uppercase"><b><?= $this->session->username; ?>!</b></span> Anda bisa mengoperasikan sistem dengan wewenang tertentu melalui pilihan menu di samping.
         </div>
         <div class="row">
+
+            <div class="col-12 mb-4">
+                <div class="alert alert-info mb-0">
+                    <i class="fas fa-info-circle"></i> <strong>Langkah Penggunaan Aplikasi</strong>
+                    <ol class="mt-2 mb-0">
+                        <li><strong>Isi Data Induk Ikan</strong> terlebih dahulu jika data Induk belum tersedia di sistem.</li>
+                        <li><strong>Isi Data Kolam</strong> terlebih dahulu jika data kolam belum tersedia di sistem.</li>
+                        <li><strong>Isi Data Pemijahan</strong> sebelum melakukan proses pemijahan.</li>
+                        <li><strong>Tekan Menu SPK</strong> untuk memulai proses seleksi induk.</li>
+                        <li><strong>Buka dan Baca Kriteria dan Sub Kriteria</strong> yang ada pada menu <em>Kriteria</em> dan <em>Sub Kriteria</em> di dalam menu SPK agar memahami dasar penilaian.</li>
+                        <li><strong>Lanjutkan Proses SPK</strong> secara berurutan, mulai dari pengisian <em>Alternatif</em> hingga menghasilkan nilai akhir (ranking).</li>
+                        <li><strong>Isi Data Hasil Pemijahan</strong> setelah proses pemijahan selesai dilakukan.</li>
+                        <li><strong>Data Stok Benih</strong> akan tertambah secara otomatis setelah selesai pengisian <em>Data Hasil Pemijahan</em></li>
+                    </ol>
+                </div>
+            </div>
+
 
             <div class="col-xl-4 col-md-4 mb-4">
                 <div class="card modern-card shadow">

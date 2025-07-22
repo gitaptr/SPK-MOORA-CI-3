@@ -20,6 +20,33 @@ class Sub_Kriteria_model extends CI_Model
         return $query->result();
     }
 
+    public function data_sub_kriteria($id_kriteria, $jenis_kelamin = null)
+    {
+        $this->db->where('id_kriteria', $id_kriteria);
+        if ($jenis_kelamin) {
+            $this->db->where('jenis_kelamin', $jenis_kelamin);
+        }
+        $this->db->order_by('nilai', 'DESC');
+        $query = $this->db->get('sub_kriteria');
+        return $query->result_array();
+    }
+    public function jumlah_subkriteria()
+    {
+        return $this->db->count_all('sub_kriteria');
+    }
+
+    public function is_duplicate_nilai($id_kriteria, $nilai, $exclude_id = null)
+    {
+        $this->db->where('id_kriteria', $id_kriteria);
+        $this->db->where('nilai', $nilai);
+        if ($exclude_id) {
+            $this->db->where('id_sub_kriteria !=', $exclude_id);
+        }
+        $query = $this->db->get('sub_kriteria');
+        return $query->num_rows() > 0;
+    }
+
+
     public function get_kriteria_by_jenis_kelamin($jenis_kelamin = null)
     {
         if ($jenis_kelamin) {
@@ -29,11 +56,11 @@ class Sub_Kriteria_model extends CI_Model
         return $query->result();
     }
     public function get_kriteria_by_id($id_kriteria)
-{
-    $this->db->where('id_kriteria', $id_kriteria);
-    $query = $this->db->get('kriteria');
-    return $query->row();
-}
+    {
+        $this->db->where('id_kriteria', $id_kriteria);
+        $query = $this->db->get('kriteria');
+        return $query->row();
+    }
     public function getTotal()
     {
         return $this->db->count_all('sub_kriteria');
@@ -74,20 +101,6 @@ class Sub_Kriteria_model extends CI_Model
     {
         $query =  $this->db->query("SELECT id_kriteria,COUNT(deskripsi) AS jml_setoran FROM sub_kriteria GROUP BY id_kriteria")->result();
         return $query;
-    }
-
-    public function data_sub_kriteria($id_kriteria, $jenis_kelamin = null)
-{
-    $this->db->where('id_kriteria', $id_kriteria);
-    if ($jenis_kelamin) {
-        $this->db->where('jenis_kelamin', $jenis_kelamin);
-    }
-    $query = $this->db->get('sub_kriteria');
-    return $query->result_array();
-}
-    public function jumlah_subkriteria()
-    {
-        return $this->db->count_all('sub_kriteria');
     }
 }
     

@@ -2,13 +2,30 @@
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-chart-line"></i> Hasil Pemijahan</h1>
-    <div class="d-flex">
-        <?php
-        $id_user_level = isset($id_user_level) ? $id_user_level : null;
-        ?>
-
-    </div>
 </div>
+
+<?php if ($id_user_level == 3): ?>
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> <strong>Data Hasil Pemijahan diisi setelah pemijahan selesai.</strong>
+        <ul class="mt-2 mb-0">
+            <li>Tekan tombol <strong>Tambah Data</strong> dan isi data hasil pemijahan.</li>
+            <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+            <li>Tekan tombol <strong>Detail</strong> pada kolom aksi untuk melihat detail dari hasil pemijahan.</li>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<?php if ($id_user_level == 2): ?>
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> <strong>Melihat Rekap Data Hasil Pemijahan UPR.</strong>
+        <ul class="mt-2 mb-0">
+            <li><strong>Memilih UPR</strong> yang akan dilihat data hasil pemijahannya terlebih dahulu</li>
+            <li>Tekan tombol <strong>Detail</strong> pada kolom aksi untuk melihat detail dari hasil pemijahan.</li>
+             <li>Lalu Tekan Tombol <strong>Cetak Data</strong> jika ingin mencetak rekap data.</li>
+        </ul>
+    </div>
+<?php endif; ?>
+
 
 <?= $this->session->flashdata('message'); ?>
 

@@ -6,6 +6,15 @@
 
 <?= $this->session->flashdata('message'); ?>
 
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> <strong>Pengisian nilai setiap calon induk ikan yang akan digunakan dalam pemijahan.</strong>
+    <ul class="mt-2 mb-0">
+       <li>Memilih <strong>waktu pemijahan</strong> terlebih dahulu dan tekan tombol <strong>Pilih</strong>.</li>
+         <li>Lanjut tekan tombol <strong>Input</strong> pada kolom aksi disetiap alternatif.</li>
+         <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+    </ul>
+</div>
+
 <!-- Form Pilihan Waktu Pemijahan -->
 <div class="card shadow mb-4">
     <div class="card-header py-2">

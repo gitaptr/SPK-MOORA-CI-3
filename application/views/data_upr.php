@@ -8,7 +8,7 @@
     <div class="d-flex">
         <?php if ($this->session->userdata('id_user_level') == 2): ?>
             <a href="<?= base_url('Data_upr/cetak_laporan') ?>" class="btn btn-primary mr-2" target="_blank">
-                <i class="fa fa-print"></i> Cetak Laporan
+                <i class="fa fa-print"></i> Cetak Data
             </a>
         <?php endif; ?>
     </div>
@@ -17,6 +17,13 @@
 <?php if (isset($page) && $page === 'pemijahan'): ?>
     <?= $this->session->flashdata('message'); ?>
 <?php endif; ?>
+
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> <strong>Melihat Rekap Data dari masing-masing UPR.</strong>
+        <ul class="mt-2 mb-0">
+             <li>Tekan Tombol <strong>Cetak Data</strong> jika ingin mencetak rekap data.</li>
+        </ul>
+    </div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">

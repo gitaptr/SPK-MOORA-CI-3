@@ -9,7 +9,7 @@
             <i class="fa fa-plus"></i> Tambah Data
         </a>
 
-     
+
         <a href="<?= base_url('Stock/cetak_laporan?upr_id=' . $id_upr) ?>" class="btn btn-primary" target="_blank">
             <i class="fa fa-print"></i> Cetak Data
         </a>
@@ -19,9 +19,14 @@
 
 <?= $this->session->flashdata('message'); ?>
 
-<!-- Tambahkan info jika data berasal dari pemijahan -->
 <div class="alert alert-info">
-    <i class="fas fa-info-circle"></i> Data stok benih dari hasil pemijahan akan otomatis tercatat dengan ukuran default "0.25 cm" dan umur "1-3 hari".
+    <i class="fas fa-info-circle"></i> <strong>Pengisian dan pendataan stok benih ikan yang dimiliki.</strong>
+    <ul class="mt-2 mb-0">
+        <li>Jika ada benih diluar hasil pemijahan, maka harus melakukan penambahan data.</li>
+        <li>Tekan tombol <strong>Tambah Data</strong> dan isi data pemijahan.</li>
+        <li>Pastikan data yang diisi benar dan tekan tombol <strong>Simpan</strong>.</li>
+        <li>Data stok benih dari hasil pemijahan akan otomatis tercatat dengan ukuran default "0.25 cm" dan umur "1-3 hari".</li>
+    </ul>
 </div>
 
 <div class="card shadow mb-4">

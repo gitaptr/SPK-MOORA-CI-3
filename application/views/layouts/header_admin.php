@@ -144,26 +144,24 @@
 
 
        <?php endif; ?>
-
-
-
+    
        <?php if ($this->session->userdata('id_user_level') == '3'): ?>
          <!-- Sidebar Start -->
-
-         <!-- Master Data Dropdown -->
-         <li class="nav-item">
-           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterData" aria-expanded="true" aria-controls="collapseMasterData">
-             <i class="fas fa-fw fa-database"></i>
-             <span>Master Data</span>
-           </a>
-           <div id="collapseMasterData" class="collapse" aria-labelledby="headingMasterData" data-parent="#accordionSidebar">
-             <div class="bg-white py-2 collapse-inner rounded">
-               <a class="collapse-item <?php if ($page == 'Kolam') echo 'active'; ?>" href="<?= base_url('Kolam'); ?>">
-                 <i class="fas fa-water"></i> Kolam </a>
-               <a class="collapse-item <?php if ($page == 'Induk') echo 'active'; ?>" href="<?= base_url('Induk'); ?>">
-                 <i class="fas fa-fish"></i> Induk Ikan</a>
-             </div>
-           </div>
+             
+       <li class="nav-item <?php if ($page == 'Induk') {
+                              echo 'active';
+                            } ?>">
+         <a class="nav-link" href="<?= base_url('Induk'); ?>">
+           <i class="fas fa-fish"></i>
+           <span>Induk Ikan</span></a>
+       </li>
+       
+         <li class="nav-item <?php if ($page == 'Kolam') {
+                                echo 'active';
+                              } ?>">
+           <a class="nav-link" href="<?= base_url('Kolam'); ?>">
+             <i class="fas fa-water"></i>
+             <span>Kolam</span></a>
          </li>
 
          <li class="nav-item <?php if ($page == 'Pemijahan') {

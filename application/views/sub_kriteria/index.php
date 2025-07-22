@@ -5,6 +5,8 @@
 </div>
 
 <?= $this->session->flashdata('message'); ?>
+<div class="alert alert-info"><strong>Sub kriteria merupakan bagian-bagian kecil dari kriteria utama, yang membantu dalam memilih induk terbaik.</strong>
+</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-2">
@@ -48,8 +50,6 @@
     </div>
 <?php endif ?>
 
-
-
 <?php foreach ($kriteria as $key): ?>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -60,8 +60,6 @@
                 <?php endif; ?>
             </div>
         </div>
-
-
 
         <div class="modal fade" id="tambah<?= $key->id_kriteria ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -118,7 +116,13 @@
                                     <td>
                                         <div class="btn-group" role="group">
                                             <a data-toggle="modal" title="Edit Data" href="#editsk<?= $key['id_sub_kriteria'] ?>" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                                            <a data-toggle="tooltip" data-placement="bottom" title="Hapus Data" href="<?= base_url('Sub_kriteria/destroy/' . $key['id_sub_kriteria']) ?>" onclick="return confirm ('Apakah anda yakin untuk meghapus data ini')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                            <a data-toggle="tooltip" data-placement="bottom" title="Hapus Data"
+                                                href="<?= base_url('Sub_kriteria/destroy/' . $key['id_sub_kriteria'] . '?jenis_kelamin=' . $key['jenis_kelamin']) ?>"
+                                                onclick="return confirm('Apakah anda yakin untuk menghapus data ini?')"
+                                                class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+
                                         </div>
                                     </td>
                                 <?php endif; ?>

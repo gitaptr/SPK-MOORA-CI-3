@@ -49,18 +49,28 @@ class Sub_Kriteria extends CI_Controller
     public function store()
     {
         $id_kriteria = $this->input->post('id_kriteria');
+        $nilai = $this->input->post('nilai');
         $kriteria = $this->Sub_Kriteria_model->get_kriteria_by_id($id_kriteria);
 
         $data = [
             'id_kriteria' => $id_kriteria,
             'deskripsi' => $this->input->post('deskripsi'),
-            'nilai' => $this->input->post('nilai'),
+            'nilai' => $nilai,
             'jenis_kelamin' => $kriteria->jenis_kelamin ?? null
         ];
 
         $this->form_validation->set_rules('id_kriteria', 'ID Kriteria', 'required');
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
         $this->form_validation->set_rules('nilai', 'Nilai', 'required');
+
+        // Validasi duplikasi nilai
+        if ($this->Sub_Kriteria_model->is_duplicate_nilai($id_kriteria, $nilai)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => '<div class="alert alert-danger">Nilai tersebut sudah digunakan dalam sub kriteria ini.</div>'
+            ]);
+            return;
+        }
 
         if ($this->form_validation->run() != false) {
             $result = $this->Sub_Kriteria_model->insert($data);
@@ -79,12 +89,24 @@ class Sub_Kriteria extends CI_Controller
             'message' => validation_errors('<div class="alert alert-danger">', '</div>')
         ]);
     }
+
     public function update($id_sub_kriteria)
     {
-        // Validasi input
+        $id_kriteria = $this->input->post('id_kriteria');
+        $nilai = $this->input->post('nilai');
+
         $this->form_validation->set_rules('id_kriteria', 'ID Kriteria', 'required');
         $this->form_validation->set_rules('deskripsi', 'Deskripsi', 'required');
         $this->form_validation->set_rules('nilai', 'Nilai', 'required');
+
+        // Validasi duplikasi nilai, tapi abaikan ID yang sedang diedit
+        if ($this->Sub_Kriteria_model->is_duplicate_nilai($id_kriteria, $nilai, $id_sub_kriteria)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => '<div class="alert alert-danger">Nilai tersebut sudah digunakan dalam sub kriteria ini.</div>'
+            ]);
+            return;
+        }
 
         if ($this->form_validation->run() == false) {
             echo json_encode([
@@ -94,17 +116,15 @@ class Sub_Kriteria extends CI_Controller
             return;
         }
 
-        // Jika validasi berhasil, update data
         $data = [
-            'id_kriteria' => $this->input->post('id_kriteria'),
+            'id_kriteria' => $id_kriteria,
             'deskripsi' => $this->input->post('deskripsi'),
-            'nilai' => $this->input->post('nilai')
+            'nilai' => $nilai
         ];
 
         $result = $this->Sub_Kriteria_model->update($id_sub_kriteria, $data);
 
         if ($result) {
-            // Ambil jenis kelamin dari data yang sudah ada
             $sub_kriteria = $this->Sub_Kriteria_model->show($id_sub_kriteria);
             $jenis_kelamin = $sub_kriteria->jenis_kelamin;
 
@@ -122,8 +142,9 @@ class Sub_Kriteria extends CI_Controller
     }
     public function destroy($id_sub_kriteria)
     {
+        $jenis_kelamin = $this->input->get('jenis_kelamin');
         $this->Sub_Kriteria_model->delete($id_sub_kriteria);
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data berhasil dihapus!</div>');
-        redirect('sub_kriteria');
+        redirect('sub_kriteria?jenis_kelamin=' . $jenis_kelamin);
     }
 }
