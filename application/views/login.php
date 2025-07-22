@@ -65,7 +65,7 @@
                                         <i class="fas fa-fw fa-sign-in-alt mr-1"></i> Masuk
                                     </button>
                                     <p class="text-center mt-3">
-                                        Belum memiliki akun? <a href="<?= base_url('register'); ?>">Daftar di sini</a>
+                                    Petani Ikan yang belum memiliki akun wajib <a href="<?= base_url('register'); ?>">Daftar di sini</a>
                                     </p>
 
                                 </form>

@@ -55,9 +55,9 @@
 
                                 <form method="POST" action="<?= site_url('register/save'); ?>">
                                     <div class="form-group">
-                                        <label for="id_upr">Pilih Nama UPR</label>
+                                        <label for="id_upr">Pilih Nama UPR dan Wilayah dengan benar</label>
                                         <select class="form-control form-control-user" id="id_upr" name="id_upr" required>
-                                            <option value="">Pilih UPR</option>
+                                            <option value="">Pilih Nama UPR</option>
                                             <?php foreach ($upr as $row): ?>
                                                 <option value="<?= $row['id_upr']; ?>"><?= $row['nama_upr']; ?></option>
                                             <?php endforeach; ?>
